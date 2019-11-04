@@ -1,0 +1,29 @@
+# /usr/bin
+homer="homer"
+bowtie2="bowtie2"
+homerTools="homerTools"
+#analyzeHiC=""
+DIR="/public/home/dxbo/msq/female/homer/egg"
+SAR="WHF4-1egg4HiC_1"	
+Bowtie2_index="/public/home/dxbo/msq/female/hicpro/index"
+Tag="TagDirectory"
+
+#echo "Step1,The first step is to trim the single fastaq"
+#$homerTools trim -3 GATC -mis 0 -matchStart 20 -min 20 $DIR/$SAR\_R1.fastq
+#$homerTools trim -3 GATC -mis 0 -matchStart 20 -min 20 $DIR/$SAR\_R2.fastq
+
+
+
+#echo "Step2,mapping the single file to a single bam file"
+#$bowtie2 -p 24 -x $Bowtie2_index -U $DIR/$SAR\_R1.fastq.trimmed > $DIR/$SAR\_R1.sam
+#$bowtie2 -p 24 -x $Bowtie2_index -U $DIR/$SAR\_R2.fastq.trimmed > $DIR/$SAR\_R2.sam
+
+echo "Step3,Combine the paired end reads to a sam file"
+#makeTagDirectory $Tag $DIR/$SAR\_R1.sam,$DIR/$SAR\_R2.sam -tbp 1
+cp -r TagDirectory/ filtered
+analyzeHiC filtered/ -res 10000 -cpu 24 -pvalue 1e-15 -circos interChrom1 -minDist 2000000000 -nomatrix
+analyzeHiC filtered/ -res 10000 -cpu 24 -pos chr1 -pvalue 1e-7 -circos interChrom -minDist 20000 -nomatrix
+
+#cp -r TagDirectory/ filtered
+#analyzeHiC filtered/ -res 10000 -cpu 24 -pvalue 1e-15 -circos interChrom1 -minDist 2000000000 -nomatrix
+#analyzeHiC filtered/ -res 10000 -cpu 24 -pos chr1 -pvalue 1e-7 -circos interChrom -minDist 20000 -nomatrix
